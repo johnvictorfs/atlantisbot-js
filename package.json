@@ -1,0 +1,16 @@
+{
+  "name": "atlantisbot-js",
+  "module": "index.ts",
+  "type": "module",
+  "scripts": {
+    "dev": "bun --watch run src/index.ts"
+  },
+  "devDependencies": {
+    "bun-types": "latest",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "discord.js": "^14.13.0",
+    "zod": "^3.22.4"
+  }
+}
