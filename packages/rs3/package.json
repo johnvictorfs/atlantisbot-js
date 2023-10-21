@@ -1,7 +1,14 @@
 {
   "name": "@local/rs3",
   "private": true,
+  "files": [
+    "./worlds.ts"
+  ],
   "devDependencies": {
     "@local/typescript": "workspace:*"
+  },
+  "dependencies": {
+    "node-html-parser": "^6.1.10",
+    "zod": "^3.22.4"
   }
 }

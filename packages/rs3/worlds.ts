@@ -1,15 +1,40 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */ // TODO: Remove
+import { getClanId } from '@/clans'
+import { getHtml } from '@/html'
+import { getPlayerInfo } from '@/players'
 
-export const getClanId = async (clanName: string) => {
-  // const url = `https://secure.runescape.com/m=clan-hiscores/l=3/a=254/compare.ws?clanName=${clanName}`
+/**
+ * Returns the current world, as a number for the player, if offline returns undefined
+ */
+export const getPlayerWorld = async (playerName: string) => {
+  const player = await getPlayerInfo(playerName)
 
-  // const response = await fetch(url)
-  // const html = await response.text()
-  // TODO
+  if (!player?.clan) {
+    return
+  }
 
-  return 1
-}
+  const clanId = await getClanId(player.clan)
 
-export const getPlayerWorld = (playerName: string, playerClan: string) => {
-  // TODO
+  if (!clanId) {
+    return
+  }
+
+  const root = await getHtml(
+    `http://services.runescape.com/m=clan-hiscores/l=3/a=254/members.ws?expandPlayerName=${playerName}&clanId=${clanId}&ranking=-1&pageSize=1&submit=submit`,
+  )
+
+  const row = root.querySelector('div.membersListRow.highlighted')
+
+  const world = row?.querySelector('span.onlineStatus span.world')
+
+  if (!world || world.textContent.toLowerCase().includes('off')) {
+    return
+  }
+
+  const worldNumber = world.textContent.match(/\d+/)?.[0]
+
+  if (!worldNumber) {
+    return
+  }
+
+  return parseInt(worldNumber)
 }

@@ -6,21 +6,24 @@ import {
   REST,
   RESTPostAPIChatInputApplicationCommandsJSONBody,
   Routes,
+  SharedNameAndDescription,
   SlashCommandBuilder,
 } from 'discord.js'
 import fs from 'fs'
 import path from 'path'
 import { env } from '../env'
 
-export class BotCommand {
-  data: SlashCommandBuilder
+export class BotCommand<
+  T extends SharedNameAndDescription = SharedNameAndDescription,
+> {
+  data: SharedNameAndDescription
   execute: (interaction: CommandInteraction) => Promise<void>
 
   constructor({
     data,
     execute,
   }: {
-    data: (builder: SlashCommandBuilder) => SlashCommandBuilder
+    data: (builder: SlashCommandBuilder) => T
     execute: (interaction: CommandInteraction) => Promise<void>
   }) {
     this.data = data(new SlashCommandBuilder())
@@ -47,6 +50,8 @@ export const getCommands = () => {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const command: BotCommand = require(filePath).default
 
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore - toJSON(): APIApplicationCommandBasicOption exists
     commands.push(command.data.toJSON())
     commandCollection.set(command.data.name, command)
   }
