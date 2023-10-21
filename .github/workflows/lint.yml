@@ -1,0 +1,17 @@
+name: lint
+on:
+  pull_request:
+    branches:
+      - '*'
+  push:
+    branches: [master]
+
+jobs:
+  lint:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - uses: oven-sh/setup-bun@v1
+
+      - run: bun install
+      - run: bun lint
