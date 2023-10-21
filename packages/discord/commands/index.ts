@@ -11,20 +11,22 @@ import {
 } from 'discord.js'
 import fs from 'fs'
 import path from 'path'
-import { env } from '../env'
+
+import { env } from '@/env'
 
 export class BotCommand<
-  T extends SharedNameAndDescription = SharedNameAndDescription,
+  TCommand extends SharedNameAndDescription = SharedNameAndDescription,
+  TInteraction extends CommandInteraction = CommandInteraction,
 > {
   data: SharedNameAndDescription
-  execute: (interaction: CommandInteraction) => Promise<void>
+  execute: (interaction: TInteraction) => Promise<void>
 
   constructor({
     data,
     execute,
   }: {
-    data: (builder: SlashCommandBuilder) => T
-    execute: (interaction: CommandInteraction) => Promise<void>
+    data: (builder: SlashCommandBuilder) => TCommand
+    execute: (interaction: TInteraction) => Promise<void>
   }) {
     this.data = data(new SlashCommandBuilder())
     this.execute = execute

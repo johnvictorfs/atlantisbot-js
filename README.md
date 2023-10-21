@@ -54,3 +54,31 @@ TypeScript version of [atlantisbot](https://github.com/johnvictorfs/atlantisbot)
     }
   })
   ```
+
+- Example with inputs:
+
+  ```ts
+  // packages/discord/commands/ping.ts
+  import { BotCommand } from "@/commands"
+  import { ChatInputCommandInteraction } from 'discord.js'
+
+  export default new BotCommand({
+    // Command definition
+    data(builder) {
+      return builder
+        .setName('ping')
+        .setDescription('Ping Pong')
+        .addStringOption((option) =>
+          option
+            .setName('name')
+            .setDescription('Name of the ping to pong')
+            .setRequired(true),
+        )
+    },
+    // Command execution
+    async execute(interaction: ChatInputCommandInteraction) {
+      const name = interaction.options.getString('name', true)
+      await interaction.reply(`Pong ${name}!`)
+    }
+  })
+  ```

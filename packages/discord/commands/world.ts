@@ -1,5 +1,6 @@
 import { BotCommand } from '@/commands'
 import { getPlayerWorld } from '@local/rs3/worlds'
+import { ChatInputCommandInteraction } from 'discord.js'
 
 export default new BotCommand({
   data(builder) {
@@ -13,17 +14,11 @@ export default new BotCommand({
           .setRequired(true),
       )
   },
-  async execute(interaction) {
+  async execute(interaction: ChatInputCommandInteraction) {
     try {
-      const playerName = interaction.options.get('player')
+      const playerName = interaction.options.getString('player', true)
+      const playerWorld = await getPlayerWorld(playerName)
 
-      // TODO: Validate options properly with zod
-      if (!playerName?.value || typeof playerName.value !== 'string') {
-        await interaction.reply('Invalid Player')
-        return
-      }
-
-      const playerWorld = await getPlayerWorld(playerName.value)
       await interaction.reply(playerWorld ? `World ${playerWorld}` : 'Off-line')
     } catch (error) {
       console.error(error) // TODO: Sentry
