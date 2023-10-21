@@ -2,7 +2,9 @@
   "name": "@local/rs3",
   "private": true,
   "files": [
-    "./worlds.ts"
+    "./worlds.ts",
+    "./clans.ts",
+    "./players.ts"
   ],
   "devDependencies": {
     "@local/typescript": "workspace:*"
