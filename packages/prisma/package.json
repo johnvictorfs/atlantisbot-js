@@ -1,0 +1,17 @@
+{
+  "name": "@local/prisma",
+  "private": true,
+  "files": [
+    "index.ts"
+  ],
+  "scripts": {
+    "pull": "prisma db pull && prisma generate"
+  },
+  "devDependencies": {
+    "prisma": "^5.4.2",
+    "@local/typescript": "workspace:*"
+  },
+  "dependencies": {
+    "@prisma/client": "5.4.2"
+  }
+}

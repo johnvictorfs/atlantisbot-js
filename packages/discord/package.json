@@ -1,8 +1,12 @@
 {
   "name": "@local/discord",
   "private": true,
+  "scripts": {
+    "dev": "bun --watch run index.ts"
+  },
   "dependencies": {
     "@local/rs3": "workspace:*",
+    "@local/prisma": "workspace:*",
     "discord.js": "^14.13.0",
     "zod": "^3.22.4"
   },

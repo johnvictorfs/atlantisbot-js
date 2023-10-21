@@ -7,9 +7,10 @@
     "tooling/*"
   ],
   "scripts": {
-    "dev": "bun --watch run packages/discord/index.ts",
+    "dev": "bun run --cwd packages/discord dev",
     "lint": "eslint . --ext .ts",
-    "lint:fix": "eslint --fix . --ext .ts"
+    "lint:fix": "eslint --fix . --ext .ts",
+    "db:pull": "bun run --cwd packages/prisma pull"
   },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.8.0",

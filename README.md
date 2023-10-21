@@ -9,6 +9,7 @@ TypeScript version of [atlantisbot](https://github.com/johnvictorfs/atlantisbot)
 - Requirements
   - [Bun](https://bun.sh)
   - A [Discord Bot Application](https://discord.com/developers/docs/getting-started#step-1-creating-an-app)
+  - A MySQL Database (local or remote)
 
 - Environment variables
 
@@ -21,6 +22,12 @@ TypeScript version of [atlantisbot](https://github.com/johnvictorfs/atlantisbot)
 
   ```bash
   bun install
+  ```
+
+- Update database schema and install prisma client
+
+  ```bash
+  bun db:pull
   ```
 
 - Run Development server

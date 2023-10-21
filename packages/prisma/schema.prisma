@@ -1,0 +1,254 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model atlantisbot_api_advlogstate {
+  id     Int     @id @default(autoincrement())
+  active Boolean
+}
+
+model atlantisbot_api_amigosecretoperson {
+  id                Int     @id @default(autoincrement())
+  receiving         Boolean
+  giving_to_user_id Int?
+  user_id           Int
+}
+
+model atlantisbot_api_amigosecretostate {
+  id            Int       @id @default(autoincrement())
+  activated     Boolean
+  start_date    DateTime? @db.DateTime(6)
+  end_date      DateTime? @db.DateTime(6)
+  premio_minimo BigInt?
+  premio_maximo BigInt?
+}
+
+model atlantisbot_api_botmessage {
+  id         Int    @id @default(autoincrement())
+  message_id String @unique(map: "message_id") @db.VarChar(100)
+  team       Int
+}
+
+model atlantisbot_api_disabledcommand {
+  id   Int    @id @default(autoincrement())
+  name String @db.LongText
+}
+
+model atlantisbot_api_discordingamename {
+  id           Int      @id @default(autoincrement())
+  name         String   @db.LongText
+  created_date DateTime @db.DateTime(6)
+  user         Int
+}
+
+model atlantisbot_api_discorduser {
+  id           Int       @id @default(autoincrement())
+  updated      DateTime  @db.DateTime(6)
+  warning_date DateTime? @db.DateTime(6)
+  disabled     Boolean
+  ingame_name  String    @db.LongText
+  discord_id   String    @db.LongText
+  discord_name String    @db.LongText
+  clan         String    @db.VarChar(50)
+}
+
+model atlantisbot_api_doacao {
+  id          Int      @id @default(autoincrement())
+  doador_name String   @db.LongText
+  date        DateTime @db.DateTime(6)
+  amount      BigInt
+}
+
+model atlantisbot_api_doacaogoal {
+  id     Int     @id @default(autoincrement())
+  goal   BigInt
+  active Boolean
+  name   String  @db.LongText
+}
+
+model atlantisbot_api_player {
+  id         Int     @id @default(autoincrement())
+  player_id  String  @db.VarChar(100)
+  role       String? @db.VarChar(100)
+  in_team    Boolean
+  substitute Boolean
+  secondary  Boolean
+  team       Int
+}
+
+model atlantisbot_api_playeractivities {
+  id            Int    @id @default(autoincrement())
+  activities_id String @db.VarChar(100)
+}
+
+model atlantisbot_api_raidsstate {
+  id                   Int     @id @default(autoincrement())
+  notifications        Boolean
+  time_to_next_message String? @db.LongText
+}
+
+model atlantisbot_api_team {
+  id                Int      @id @default(autoincrement())
+  created_date      DateTime @db.DateTime(6)
+  team_id           String   @unique(map: "team_id") @db.VarChar(100)
+  title             String   @db.VarChar(300)
+  size              Int
+  role              String?  @db.VarChar(100)
+  role_secondary    String?  @db.VarChar(100)
+  author_id         String   @db.VarChar(100)
+  invite_channel_id String   @db.VarChar(100)
+  invite_message_id String   @db.VarChar(100)
+  team_channel_id   String   @db.VarChar(100)
+  team_message_id   String   @db.VarChar(100)
+  secondary_limit   Int?
+}
+
+model atlantisbot_api_voiceofseren {
+  id                Int      @id @default(autoincrement())
+  current_voice_one String   @db.VarChar(50)
+  current_voice_two String   @db.VarChar(50)
+  message_id        String   @db.VarChar(100)
+  updated           DateTime @db.DateTime(6)
+}
+
+model auth_group {
+  id   Int    @id @default(autoincrement())
+  name String @unique(map: "name") @db.VarChar(150)
+}
+
+model auth_group_permissions {
+  id            Int @id @default(autoincrement())
+  group_id      Int
+  permission_id Int
+
+  @@unique([group_id, permission_id], map: "auth_group_permissions_group_id_permission_id_0cd325b0_uniq")
+}
+
+model auth_permission {
+  id              Int    @id @default(autoincrement())
+  name            String @db.VarChar(255)
+  content_type_id Int
+  codename        String @db.VarChar(100)
+
+  @@unique([content_type_id, codename], map: "auth_permission_content_type_id_codename_01ab375a_uniq")
+}
+
+model authtoken_token {
+  key     String   @id @db.VarChar(40)
+  created DateTime @db.DateTime(6)
+  user_id Int      @unique(map: "user_id")
+}
+
+model django_admin_log {
+  id              Int      @id @default(autoincrement())
+  action_time     DateTime @db.DateTime(6)
+  object_id       String?  @db.LongText
+  object_repr     String   @db.VarChar(200)
+  action_flag     Int      @db.UnsignedSmallInt
+  change_message  String   @db.LongText
+  content_type_id Int?
+  user_id         Int
+}
+
+model django_content_type {
+  id        Int    @id @default(autoincrement())
+  app_label String @db.VarChar(100)
+  model     String @db.VarChar(100)
+
+  @@unique([app_label, model], map: "django_content_type_app_label_model_76bd3d3b_uniq")
+}
+
+model django_migrations {
+  id      Int      @id @default(autoincrement())
+  app     String   @db.VarChar(255)
+  name    String   @db.VarChar(255)
+  applied DateTime @db.DateTime(6)
+}
+
+model django_session {
+  session_key  String   @id @db.VarChar(40)
+  session_data String   @db.LongText
+  expire_date  DateTime @db.DateTime(6)
+
+  @@index([expire_date], map: "django_session_expire_date_a5c62663")
+}
+
+model dynamic_preferences_globalpreferencemodel {
+  id        Int     @id @default(autoincrement())
+  section   String? @db.VarChar(150)
+  name      String  @db.VarChar(150)
+  raw_value String? @db.LongText
+
+  @@unique([section, name], map: "dynamic_preferences_glob_section_name_f4a2439b_uniq")
+  @@index([name], map: "dynamic_preferences_globalpreferencemodel_name_033debe0")
+  @@index([section], map: "dynamic_preferences_globalpreferencemodel_section_c1ee9cc3")
+}
+
+model dynamic_preferences_users_userpreferencemodel {
+  id          Int     @id @default(autoincrement())
+  section     String? @db.VarChar(150)
+  name        String  @db.VarChar(150)
+  raw_value   String? @db.LongText
+  instance_id Int
+
+  @@unique([instance_id, section, name], map: "dynamic_preferences_user_instance_id_section_name_29814e3f_uniq")
+  @@index([name], map: "dynamic_preferences_users_userpreferencemodel_name_11ac488d")
+  @@index([section], map: "dynamic_preferences_users_userpreferencemodel_section_ba869570")
+}
+
+model guides_guide {
+  id          Int      @id @default(autoincrement())
+  title       String   @db.LongText
+  slug        String   @unique(map: "slug") @db.VarChar(35)
+  category    String   @db.LongText
+  description String   @db.LongText
+  content     String   @db.LongText
+  approved    Boolean
+  date_posted DateTime @db.DateTime(6)
+  author_id   Int
+}
+
+model runescape_clanmember {
+  id   Int    @id @default(autoincrement())
+  name String @db.LongText
+  exp  Float
+  rank String @db.LongText
+}
+
+model users_user {
+  id           Int       @id @default(autoincrement())
+  password     String    @db.VarChar(128)
+  last_login   DateTime? @db.DateTime(6)
+  is_superuser Boolean
+  username     String    @unique(map: "username") @db.VarChar(150)
+  first_name   String    @db.VarChar(30)
+  last_name    String    @db.VarChar(150)
+  email        String    @db.VarChar(254)
+  is_staff     Boolean
+  is_active    Boolean
+  date_joined  DateTime  @db.DateTime(6)
+  ingame_name  String    @db.LongText
+  discord_id   BigInt?
+}
+
+model users_user_groups {
+  id       Int @id @default(autoincrement())
+  user_id  Int
+  group_id Int
+
+  @@unique([user_id, group_id], map: "users_user_groups_user_id_group_id_b88eab82_uniq")
+}
+
+model users_user_user_permissions {
+  id            Int @id @default(autoincrement())
+  user_id       Int
+  permission_id Int
+
+  @@unique([user_id, permission_id], map: "users_user_user_permissions_user_id_permission_id_43338c45_uniq")
+}
