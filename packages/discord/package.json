@@ -1,0 +1,12 @@
+{
+  "name": "@local/discord",
+  "private": true,
+  "dependencies": {
+    "@local/rs3": "workspace:*",
+    "discord.js": "^14.13.0",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@local/typescript": "workspace:*"
+  }
+}

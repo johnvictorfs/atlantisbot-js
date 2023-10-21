@@ -1,0 +1,7 @@
+{
+  "name": "@local/rs3",
+  "private": true,
+  "devDependencies": {
+    "@local/typescript": "workspace:*"
+  }
+}

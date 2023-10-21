@@ -1,0 +1,11 @@
+{
+  "name": "@local/typescript",
+  "private": true,
+  "files": [
+    "base.json"
+  ],
+  "devDependencies": {
+    "bun-types": "latest",
+    "typescript": "^5.0.0"
+  }
+}

@@ -24,7 +24,7 @@ TypeScript version of [atlantisbot](https://github.com/johnvictorfs/atlantisbot)
   ```
 
 - Run Development server
-  
+
     ```bash
     bun dev
     ```
@@ -33,11 +33,12 @@ TypeScript version of [atlantisbot](https://github.com/johnvictorfs/atlantisbot)
 
 ## Creating commands
 
-- Create a new file in `src/commands` folder (ex.: `src/commands/my-new-command.ts`)
+- Create a new file in `packages/discord/commands` folder (ex.: `my-new-command.ts`)
 
 - Export a definition for a command
 
   ```ts
+  // packages/discord/commands/ping.ts
   import { BotCommand } from "@/commands"
 
   export default new BotCommand({
