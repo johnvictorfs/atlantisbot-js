@@ -1,7 +1,16 @@
-import { ApplicationCommand, ApplicationCommandDataResolvable, Client, Collection, CommandInteraction, GatewayIntentBits, REST, RESTPostAPIChatInputApplicationCommandsJSONBody, Routes, SlashCommandBuilder } from 'discord.js';
-import fs from 'fs';
-import path from 'path';
-import { env } from '../env';
+import {
+  ApplicationCommandDataResolvable,
+  Client,
+  Collection,
+  CommandInteraction,
+  REST,
+  RESTPostAPIChatInputApplicationCommandsJSONBody,
+  Routes,
+  SlashCommandBuilder,
+} from 'discord.js'
+import fs from 'fs'
+import path from 'path'
+import { env } from '../env'
 
 export class BotCommand {
   data: SlashCommandBuilder
@@ -9,9 +18,9 @@ export class BotCommand {
 
   constructor({
     data,
-    execute
+    execute,
   }: {
-    data: (builder: SlashCommandBuilder) => SlashCommandBuilder,
+    data: (builder: SlashCommandBuilder) => SlashCommandBuilder
     execute: (interaction: CommandInteraction) => Promise<void>
   }) {
     this.data = data(new SlashCommandBuilder())
@@ -24,24 +33,27 @@ export class BotCommand {
  * to register on Discord's API, and a Collection to execute the commands in the client
  */
 export const getCommands = () => {
-  const commands: RESTPostAPIChatInputApplicationCommandsJSONBody[] = [];
-  const commandCollection = new Collection<string, BotCommand>();
+  const commands: RESTPostAPIChatInputApplicationCommandsJSONBody[] = []
+  const commandCollection = new Collection<string, BotCommand>()
 
-  const commandFolders = path.join(__dirname);
-  const commandFiles = fs.readdirSync(commandFolders)
-    .filter(file => file.endsWith('.ts') && file !== 'index.ts');
+  const commandFolders = path.join(__dirname)
+  const commandFiles = fs
+    .readdirSync(commandFolders)
+    .filter((file) => file.endsWith('.ts') && file !== 'index.ts')
 
   for (const file of commandFiles) {
-    const filePath = path.join(commandFolders, file);
-    const command: BotCommand = require(filePath).default;
+    const filePath = path.join(commandFolders, file)
 
-    commands.push(command.data.toJSON());
-    commandCollection.set(command.data.name, command);
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const command: BotCommand = require(filePath).default
+
+    commands.push(command.data.toJSON())
+    commandCollection.set(command.data.name, command)
   }
 
   return {
     commandsJson: commands,
-    commandCollection
+    commandCollection,
   }
 }
 
@@ -51,20 +63,23 @@ export const registerCommands = async (client: Client) => {
   }
 
   const { commandsJson, commandCollection } = getCommands()
-  const rest = new REST().setToken(env.DISCORD_BOT_TOKEN);
+  const rest = new REST().setToken(env.DISCORD_BOT_TOKEN)
 
   try {
-    console.log(`Started refreshing ${commandsJson.length} application (/) commands.`);
+    console.log(
+      `Started refreshing ${commandsJson.length} application (/) commands.`,
+    )
 
     // Refresh all commands
-    const data = await rest.put(
-      Routes.applicationCommands(client.user.id),
-      { body: commandsJson },
-    ) as ApplicationCommandDataResolvable[]
+    const data = (await rest.put(Routes.applicationCommands(client.user.id), {
+      body: commandsJson,
+    })) as ApplicationCommandDataResolvable[]
 
-    console.log(`Successfully reloaded ${data.length} application (/) commands.`);
+    console.log(
+      `Successfully reloaded ${data.length} application (/) commands.`,
+    )
   } catch (error) {
-    console.error(error);
+    console.error(error)
   }
 
   return commandCollection
